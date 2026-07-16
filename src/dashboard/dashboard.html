@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buddy's Notebook</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <div class="notebook-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="profile-header">
+        <div class="profile-avatar-circle">
+          <span class="avatar-emoji">🐶</span>
+        </div>
+        <div class="profile-info">
+          <div class="profile-name-edit">
+            <h2 id="sidebar-pet-name">Buddy</h2>
+            <span class="edit-icon">📝</span>
+          </div>
+          <p class="journal-sub">My Companion</p>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <a href="#" class="nav-item active" data-tab="tab-general">
+          <span class="nav-icon">🏠</span> General
+        </a>
+        <a href="#" class="nav-item" data-tab="tab-notifications">
+          <span class="nav-icon">🔔</span> Notifications
+        </a>
+        <a href="#" class="nav-item" data-tab="tab-messages">
+          <span class="nav-icon">💬</span> Messages
+        </a>
+        <a href="#" class="nav-item" data-tab="tab-behavior">
+          <span class="nav-icon">❤️</span> Behavior
+        </a>
+        <a href="#" class="nav-item" data-tab="tab-appearance">
+          <span class="nav-icon">🎨</span> Appearance
+        </a>
+        <a href="#" class="nav-item" data-tab="tab-about">
+          <span class="nav-icon">ℹ️</span> About
+        </a>
+      </nav>
+      
+      <button id="global-save-btn" class="save-button-sidebar">💾 Save Changes</button>
+    </aside>
+
+    <!-- MAIN PANEL -->
+    <main class="main-panel">
+      <!-- GENERAL TAB -->
+      <section id="tab-general" class="tab-content active">
+        <div class="section-header">
+          <h2>General Profile</h2>
+          <p>Manage your companion's identity.</p>
+        </div>
+        
+        <!-- Companion Profile Card -->
+        <div class="dashboard-card profile-card">
+          <div class="profile-card-content">
+            <span class="card-tag">COMPANION PROFILE</span>
+            <div class="form-group mt-10">
+              <label for="companion-name">Companion Name</label>
+              <input type="text" id="companion-name" value="Buddy" required>
+            </div>
+            <div class="status-indicator-row mt-15">
+              <div>
+                <span class="status-label">Current Status</span>
+                <p id="status-activity-val" class="status-value text-green">🟢 Awake & Happy</p>
+              </div>
+              <div>
+                <span class="status-label">Mood</span>
+                <p id="status-mood-val" class="status-value">😊</p>
+              </div>
+            </div>
+          </div>
+          <div class="profile-card-illustration">
+            <!-- Inline SVG Front view sitting -->
+            <svg viewBox="0 0 200 200" class="illustration-svg">
+              <ellipse cx="100" cy="180" rx="45" ry="7" fill="rgba(0,0,0,0.08)" />
+              <path d="M 130,135 C 160,135 170,110 160,90 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+              <path d="M 62,142 C 42,142 36,178 60,178 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+              <path d="M 138,142 C 158,142 164,178 140,178 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+              <path d="M 68,120 C 68,105 132,105 132,122 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+              <path d="M 82,130 C 76,130 76,178 86,178 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+              <path d="M 118,130 C 124,130 124,178 114,178 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+              <!-- Neck added here to illustration -->
+              <path d="M 84,92 L 84,122 C 84,122 100,126 116,122 L 116,92 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+              <path d="M 76,108 C 76,108 100,120 124,108 Z" fill="#ff4757" stroke="#2f3542" stroke-width="4" />
+              <circle cx="100" cy="115" r="4" fill="#ffa502" stroke="#2f3542" stroke-width="2" />
+              <g>
+                <path d="M 68,54 C 42,59 30,102 52,112 Z" fill="#b2bec3" stroke="#2f3542" stroke-width="4.5" />
+                <path d="M 132,54 C 158,59 170,102 148,112 Z" fill="#b2bec3" stroke="#2f3542" stroke-width="4.5" />
+                <path d="M 62,60 C 62,26 138,26 138,60 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                <ellipse cx="80" cy="62" rx="8" ry="10" fill="#ffffff" stroke="#2f3542" stroke-width="3" />
+                <circle cx="80" cy="62" r="4.5" fill="#2f3542" />
+                <ellipse cx="120" cy="62" rx="8" ry="10" fill="#ffffff" stroke="#2f3542" stroke-width="3" />
+                <circle cx="120" cy="62" r="4.5" fill="#2f3542" />
+                <path d="M 94,70 C 94,66 106,66 106,70 Z" fill="#2f3542" />
+                <path d="M 100,74 L 100,79 Q 96,81 94,79 M 100,79 Q 104,81 106,79" stroke="#2f3542" stroke-width="2" fill="none" />
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- BOTTOM AREA: IN-APP APPEARANCE EXAMPLES -->
+        <div class="appearance-mockups-section">
+          <span class="card-tag">IN-APP APPEARANCE EXAMPLES</span>
+          <div class="mockup-row">
+            <div class="mockup-item">
+              <div class="mockup-svg-box">
+                <!-- SIT FRONT -->
+                <svg viewBox="0 0 200 200" class="mini-dog-svg">
+                  <ellipse cx="100" cy="180" rx="35" ry="5" fill="rgba(0,0,0,0.06)" />
+                  <path d="M 130,135 C 160,135 170,110 160,90 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <path d="M 62,142 C 42,142 36,178 60,178 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <path d="M 138,142 C 158,142 164,178 140,178 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <path d="M 68,120 C 68,105 132,105 132,122 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <path d="M 82,130 C 76,130 76,178 86,178 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <path d="M 118,130 C 124,130 124,178 114,178 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <path d="M 84,92 L 84,122 C 84,122 100,126 116,122 L 116,92 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <path d="M 76,108 C 76,108 100,120 124,108 Z" fill="#ff4757" stroke="#2f3542" stroke-width="4" />
+                  <g>
+                    <path d="M 68,54 C 42,59 32,102 52,112 Z" fill="#b2bec3" stroke="#2f3542" stroke-width="4.5" />
+                    <path d="M 132,54 C 158,59 168,102 148,112 Z" fill="#b2bec3" stroke="#2f3542" stroke-width="4.5" />
+                    <path d="M 62,60 C 62,26 138,26 138,60 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                    <circle cx="80" cy="62" r="6" fill="#2f3542" />
+                    <circle cx="120" cy="62" r="6" fill="#2f3542" />
+                    <path d="M 94,70 C 94,66 106,66 106,70 Z" fill="#2f3542" />
+                  </g>
+                </svg>
+              </div>
+              <span class="mockup-label">IDLE (SITTING)</span>
+            </div>
+            
+            <div class="mockup-item">
+              <div class="mockup-svg-box">
+                <!-- WALK SIDE -->
+                <svg viewBox="0 0 200 200" class="mini-dog-svg">
+                  <ellipse cx="100" cy="180" rx="35" ry="5" fill="rgba(0,0,0,0.06)" />
+                  <path d="M 50,122 C 30,110 32,80 48,82 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <path d="M 72,135 C 72,135 62,175 72,175 Z" fill="#e2e8f0" stroke="#2f3542" stroke-width="4" />
+                  <path d="M 112,135 C 112,135 104,175 114,175 Z" fill="#e2e8f0" stroke="#2f3542" stroke-width="4" />
+                  <path d="M 54,120 C 54,105 130,110 130,130 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <path d="M 64,135 C 64,135 54,178 64,178 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <path d="M 122,135 C 122,135 114,178 124,178 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <g>
+                    <path d="M 112,90 C 105,65 155,55 160,82 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                    <path d="M 116,110 C 116,110 128,118 134,112 Z" fill="#ff4757" stroke="#2f3542" stroke-width="3" />
+                    <path d="M 116,70 C 102,74 96,108 110,112 Z" fill="#b2bec3" stroke="#2f3542" stroke-width="4" />
+                    <ellipse cx="140" cy="74" rx="3" ry="5" fill="#2f3542" />
+                    <path d="M 158,80 C 162,80 162,85 158,85 Z" fill="#2f3542" />
+                  </g>
+                </svg>
+              </div>
+              <span class="mockup-label">WALKING</span>
+            </div>
+
+            <div class="mockup-item">
+              <div class="mockup-svg-box">
+                <!-- RUNNING -->
+                <svg viewBox="0 0 200 200" class="mini-dog-svg" style="transform: rotate(5deg) scale(0.95);">
+                  <ellipse cx="90" cy="180" rx="30" ry="4" fill="rgba(0,0,0,0.06)" />
+                  <path d="M 50,122 C 30,110 32,80 48,82 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <path d="M 72,135 C 72,135 55,165 65,165 Z" fill="#e2e8f0" stroke="#2f3542" stroke-width="4" />
+                  <path d="M 112,135 C 112,135 95,165 105,165 Z" fill="#e2e8f0" stroke="#2f3542" stroke-width="4" />
+                  <path d="M 54,120 C 54,105 130,110 130,130 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <path d="M 64,135 C 64,135 48,168 58,168 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <path d="M 122,135 C 122,135 105,168 115,168 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <g>
+                    <path d="M 112,90 C 105,65 155,55 160,82 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                    <path d="M 116,110 C 116,110 128,118 134,112 Z" fill="#ff4757" stroke="#2f3542" stroke-width="3" />
+                    <path d="M 116,70 C 102,74 96,108 110,112 Z" fill="#b2bec3" stroke="#2f3542" stroke-width="4" />
+                    <ellipse cx="140" cy="74" rx="3" ry="5" fill="#2f3542" />
+                    <path d="M 158,80 C 162,80 162,85 158,85 Z" fill="#2f3542" />
+                  </g>
+                </svg>
+              </div>
+              <span class="mockup-label">RUNNING</span>
+            </div>
+
+            <div class="mockup-item">
+              <div class="mockup-svg-box">
+                <!-- STRETCH -->
+                <svg viewBox="0 0 200 200" class="mini-dog-svg">
+                  <ellipse cx="110" cy="180" rx="40" ry="5" fill="rgba(0,0,0,0.06)" />
+                  <path d="M 55,100 C 40,82 32,55 46,58 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <path d="M 64,115 C 64,115 110,128 140,155 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <path d="M 134,152 L 165,178 L 155,178 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4" />
+                  <g>
+                    <path d="M 132,116 C 125,95 158,85 162,105 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                    <path d="M 130,102 C 118,106 116,132 126,135 Z" fill="#b2bec3" stroke="#2f3542" stroke-width="4" />
+                    <path d="M 148,100 Q 152,98 154,103" stroke="#2f3542" stroke-width="2" fill="none" />
+                  </g>
+                </svg>
+              </div>
+              <span class="mockup-label">STRETCHING</span>
+            </div>
+
+            <div class="mockup-item">
+              <div class="mockup-svg-box">
+                <!-- SLEEP -->
+                <svg viewBox="0 0 200 200" class="mini-dog-svg">
+                  <ellipse cx="100" cy="180" rx="35" ry="5" fill="rgba(0,0,0,0.06)" />
+                  <path d="M 50,150 C 35,120 165,120 150,150 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4.5" />
+                  <path d="M 94,136 C 80,140 76,168 88,170 Z" fill="#b2bec3" stroke="#2f3542" stroke-width="4.5" />
+                  <path d="M 98,135 C 98,135 130,130 134,148 Z" fill="#ffffff" stroke="#2f3542" stroke-width="4" />
+                  <path d="M 115,145 Q 120,150 125,145" stroke="#2f3542" stroke-width="2.5" fill="none" />
+                </svg>
+              </div>
+              <span class="mockup-label">SLEEPING</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NOTIFICATIONS TAB (Focused Break Reminders) -->
+      <section id="tab-notifications" class="tab-content">
+        <div class="section-header">
+          <h2>Notifications & Reminders</h2>
+          <p>Configure health alerts and schedule stretch breaks.</p>
+        </div>
+        
+        <div class="settings-focused-container">
+          <!-- Break Reminder Card -->
+          <div class="dashboard-card reminders-card stretch-card-wide">
+            <div class="flex-row">
+              <span class="card-tag">BREAK REMINDER</span>
+              <label class="switch">
+                <input type="checkbox" id="reminders-enabled">
+                <span class="slider round"></span>
+              </label>
+            </div>
+            <label class="mt-10 mb-10">Remind me to take breaks</label>
+            
+            <div id="reminders-options-container" class="radio-vertical-list">
+              <label class="radio-card-cozy">
+                <input type="radio" name="reminder-preset" value="off">
+                <span class="radio-dot"></span>
+                <span class="radio-text">Off</span>
+              </label>
+              <label class="radio-card-cozy">
+                <input type="radio" name="reminder-preset" value="15m">
+                <span class="radio-dot"></span>
+                <span class="radio-text">Every 15 minutes</span>
+              </label>
+              <label class="radio-card-cozy">
+                <input type="radio" name="reminder-preset" value="30m">
+                <span class="radio-dot"></span>
+                <span class="radio-text">Every 30 minutes</span>
+              </label>
+              <label class="radio-card-cozy">
+                <input type="radio" name="reminder-preset" value="45m">
+                <span class="radio-dot"></span>
+                <span class="radio-text">Every 45 minutes</span>
+              </label>
+              <label class="radio-card-cozy">
+                <input type="radio" name="reminder-preset" value="1h" checked>
+                <span class="radio-dot"></span>
+                <span class="radio-text">Every 1 hour</span>
+              </label>
+              <label class="radio-card-cozy">
+                <input type="radio" name="reminder-preset" value="2h">
+                <span class="radio-dot"></span>
+                <span class="radio-text">Every 2 hours</span>
+              </label>
+              <label class="radio-card-cozy">
+                <input type="radio" name="reminder-preset" value="custom">
+                <span class="radio-dot"></span>
+                <span class="radio-text">Custom time</span>
+              </label>
+
+              <!-- Custom time inputs -->
+              <div id="custom-interval-pane" class="nested-pane-cozy hidden">
+                <div class="flex-row">
+                  <div class="half-width">
+                    <label for="custom-hours">Hours</label>
+                    <input type="number" id="custom-hours" min="0" max="23" value="0">
+                  </div>
+                  <div class="half-width">
+                    <label for="custom-minutes">Minutes</label>
+                    <input type="number" id="custom-minutes" min="0" max="59" value="1">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Preview Bubble -->
+            <div class="preview-bubble-box mt-15">
+              <span class="preview-tag">Preview Bubble</span>
+              <div class="bubble-preview-container-mini">
+                <span class="preview-bubble-emoji">🐶</span>
+                <div class="preview-speech-bubble">
+                  <p id="reminder-bubble-preview-text">Time for a quick stretch break! 💧</p>
+                  <div class="preview-bubble-arrow-left"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MESSAGES TAB (Custom Greeting Greetings list and Preview) -->
+      <section id="tab-messages" class="tab-content">
+        <div class="section-header">
+          <h2>Companion Messages</h2>
+          <p>Customize what Buddy says to you.</p>
+        </div>
+        
+        <div class="notebook-grid">
+          <!-- Greetings List -->
+          <div class="dashboard-card greetings-card">
+            <span class="card-tag">GREETINGS (ON LAUNCH)</span>
+            <p class="desc-text mt-5 mb-10">Buddy will say one of these when launched.</p>
+            
+            <div class="greetings-list-container">
+              <ul id="message-list" class="message-list-cozy">
+                <!-- Rendered dynamically -->
+              </ul>
+            </div>
+            
+            <button id="add-message-btn" class="cozy-btn outline-btn mt-10 width-100">+ Add Greeting</button>
+          </div>
+
+          <!-- Message Preview -->
+          <div class="dashboard-card message-preview-card">
+            <span class="card-tag">MESSAGE PREVIEW</span>
+            <p class="desc-text mb-15">See how Buddy will say it</p>
+            
+            <div class="bubble-preview-container-mini">
+              <span class="preview-bubble-emoji">🐶</span>
+              <div class="preview-speech-bubble big-preview">
+                <p id="greetings-bubble-preview-text">Let's focus and make today super productive! ❤️</p>
+                <div class="preview-bubble-arrow-left"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BEHAVIOR TAB (Launch and Activity parameters) -->
+      <section id="tab-behavior" class="tab-content">
+        <div class="section-header">
+          <h2>Companion Behavior</h2>
+          <p>Configure roaming parameters and speed.</p>
+        </div>
+        
+        <div class="notebook-grid">
+          <!-- Startup settings -->
+          <div class="dashboard-card toggle-card">
+            <span class="card-tag">LAUNCH & STARTUP</span>
+            <div class="flex-row mt-10">
+              <div>
+                <label class="switch-title">Launch on Windows Startup</label>
+                <p class="desc-text text-left">Buddy will start automatically when you turn on your computer.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="startup-launch-behavior">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Activity details -->
+          <div class="dashboard-card activity-card">
+            <span class="card-tag">COMPANION ACTIVITY</span>
+            <label class="mt-10">Activity Level</label>
+            <p class="desc-text mb-10">How active should Buddy be?</p>
+            
+            <div class="activity-presets">
+              <label class="preset-btn">
+                <input type="radio" name="activity-level-behavior" value="calm">
+                <span class="preset-btn-label">🍃 Calm</span>
+              </label>
+              <label class="preset-btn">
+                <input type="radio" name="activity-level-behavior" value="balanced" checked>
+                <span class="preset-btn-label">🍖 Balanced</span>
+              </label>
+              <label class="preset-btn">
+                <input type="radio" name="activity-level-behavior" value="energetic">
+                <span class="preset-btn-label">⚡ Energetic</span>
+              </label>
+            </div>
+
+            <div class="form-group mt-15 padding-none">
+              <div class="flex-row">
+                <label for="speed-slider-behavior" class="margin-none">Movement Speed</label>
+                <span id="speed-indicator-bar-behavior" class="slider-dot-bar">█████░░░░░</span>
+              </div>
+              <input type="range" id="speed-slider-behavior" min="1" max="10" value="5" class="cozy-slider">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- APPEARANCE TAB -->
+      <section id="tab-appearance" class="tab-content">
+        <div class="section-header">
+          <h2>Appearance & Styling</h2>
+          <p>Customize how Buddy looks.</p>
+        </div>
+        <div class="dashboard-card">
+          <span class="card-tag">COMING SOON</span>
+          <p class="mt-10">We are currently working on adding gold, brown, and black fur options, along with different cute pets (like cats)! Stay updated!</p>
+        </div>
+      </section>
+
+      <!-- ABOUT TAB -->
+      <section id="tab-about" class="tab-content">
+        <div class="section-header">
+          <h2>About Companion</h2>
+          <p>Secure, local, and privacy-first.</p>
+        </div>
+        <div class="dashboard-card text-card">
+          <h3>🔒 Privacy First</h3>
+          <p>This desktop pet is designed to motivate and accompany you while you code, write, or work. It runs <strong>100% offline</strong> with zero telemetry, zero keystroke recording, and zero network calls. All data stays entirely on your computer.</p>
+          
+          <h3 class="mt-20">🎮 Controls Reminder</h3>
+          <ul>
+            <li><strong>Look</strong>: Move your mouse near Buddy to make him track your cursor.</li>
+            <li><strong>Drag</strong>: Click and drag Buddy anywhere on your screen.</li>
+            <li><strong>Settings</strong>: Double-click or Right-click Buddy to open this notebook.</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Add Message Modal -->
+  <div id="add-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <h3>✍️ Add New Greeting</h3>
+      <textarea id="modal-message-input" rows="3" placeholder="Write your greeting here..."></textarea>
+      <div class="modal-actions">
+        <button id="modal-cancel-btn" class="cozy-btn outline-btn">Cancel</button>
+        <button id="modal-save-btn" class="cozy-btn primary-btn">Add to List</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

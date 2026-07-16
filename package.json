@@ -1,0 +1,22 @@
+{
+  "name": "desktop-pet",
+  "version": "1.0.0",
+  "description": "A cute, interactive, and secure desktop pet companion for Windows.",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "author": "Antigravity",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.antigravity.desktoppet",
+    "win": {
+      "target": "portable"
+    }
+  }
+}
