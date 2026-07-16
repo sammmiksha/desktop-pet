@@ -1,26 +1,26 @@
-# 🐶 Buddy - Cozy Desktop Companion
+# Buddy - Cozy Desktop Companion
+
+**Latest Release**: v1.0.0
 
 A cute, privacy-first desktop pet companion for your computer. Buddy roams your screen, tracks your cursor with googly eyes, and reminds you to stretch and take breaks while you work.
 
-Buddy runs **100% offline** with zero tracking, zero telemetry, and zero registry bloat.
+Buddy runs 100% offline with zero tracking, zero telemetry, and zero registry bloat.
 
 ---
 
-## 🚀 Direct Download
+## Direct Download
 
-You do **not** need to install Node.js, clone this repository, or run terminal commands to use Buddy. We compile the application into a single, portable executable file.
+You do not need to install Node.js, clone this repository, or run terminal commands to use Buddy. We compile the application into a single, portable executable file.
 
-### [📥 Click Here to Download Buddy for Windows (.exe)](#releases-section)
-
-> *Note: If you just created this repository, go to **Releases** > **Draft a new release**, upload your compiled `.exe` from the `dist/` folder, and update this link to point to your release file.*
+### [Click Here to Download Buddy for Windows (.exe)](https://github.com/sammmiksha/desktop-pet/releases/download/Desktop-pet/desktop-pet.exe)
 
 ---
 
-## 📋 How to Run Buddy on Windows
+## How to Run Buddy on Windows
 
 Since Buddy is a standalone portable application not distributed through the Microsoft Store, Windows Defender SmartScreen might show a warning on first launch.
 
-1. **Download** the `Buddy-Companion-Portable.exe` file from the link above.
+1. **Download** the `desktop-pet.exe` file from the link above.
 2. **Double-click** the downloaded file.
 3. If the Windows SmartScreen popup appears:
    * Click **More info** on the message box.
@@ -29,7 +29,7 @@ Since Buddy is a standalone portable application not distributed through the Mic
 
 ---
 
-## ✨ Features
+## Features
 
 * **Cozy Character Sheet Poses**: Built exactly like the official model sheet, Buddy supports Sitting, Walking (with a 4-step leg cycle), Running, Stretching, and Sleeping illustrations.
 * **Googly Cursor Tracking**: Buddy's eyes and head follow your mouse cursor smoothly across your screen monitors.
@@ -39,7 +39,7 @@ Since Buddy is a standalone portable application not distributed through the Mic
 
 ---
 
-## 🛠️ Development & Building
+## Development & Building
 
 If you are a developer and want to modify Buddy or compile the executable yourself:
 
@@ -49,7 +49,7 @@ Install [Node.js](https://nodejs.org/) (LTS recommended).
 ### 2. Run Locally
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/desktop-pet.git
+git clone https://github.com/sammmiksha/desktop-pet.git
 
 # Install dependencies
 npm install
@@ -58,16 +58,16 @@ npm install
 npm start
 ```
 
-### 3. Build the Portable `.exe`
+### 3. Build the Portable .exe
 ```bash
 # Package the application into a standalone portable exe
 npm run dist
 ```
-> ⚠️ **Windows Build Note**: If the build fails with a `Cannot create symbolic link` error, run your terminal (Command Prompt or PowerShell) as **Administrator** and execute `npm run dist` again. Windows requires administrator privileges to create symbolic links during package extraction.
+> **Windows Build Note**: If the build fails with a `Cannot create symbolic link` error, run your terminal (Command Prompt or PowerShell) as **Administrator** and execute `npm run dist` again. Windows requires administrator privileges to create symbolic links during package extraction.
 
-Once completed, you will find a standalone `Buddy-Companion-Portable.exe` (or similar) inside the newly created `dist/` directory. Upload this file to your GitHub Releases page!
+Once completed, you will find a standalone `desktop-pet.exe` inside the newly created `dist/` directory. Upload this file to your GitHub Releases page!
 
 ---
 
-## 🔒 Privacy & Safety
-Buddy has **zero telemetry, zero internet connection requirements, and zero data collecting**. Everything resides locally in your user profile path.
+## Privacy & Safety
+Buddy has zero telemetry, zero internet connection requirements, and zero data collecting. Everything resides locally in your user profile path.
