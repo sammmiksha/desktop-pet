@@ -60,19 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const actVal = document.getElementById('status-activity-val');
     const moodVal = document.getElementById('status-mood-val');
 
-    let actEmoji = '🟢';
-    if (activity === 'Sleeping') actEmoji = '😴';
-    else if (activity === 'Sitting') actEmoji = '🪑';
-    else if (activity === 'Walking Around' || activity === 'Wandering') actEmoji = '🚶';
-    else if (activity === 'Scratching') actEmoji = '🐕';
-    else if (activity === 'Stretching') actEmoji = '🙆';
-
-    let moodEmoji = '😊';
-    if (mood === 'Sleepy') moodEmoji = '😴';
-    else if (mood === 'Curious') moodEmoji = '🤔';
-
-    if (actVal) actVal.innerText = `${actEmoji} ${activity}`;
-    if (moodVal) moodVal.innerText = `${moodEmoji} ${mood}`;
+    if (actVal) actVal.innerText = activity;
+    if (moodVal) moodVal.innerText = mood;
   };
 
   // Tab switcher
@@ -233,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Break Preview
     const breaks = currentMessages.breakMessages;
     if (breaks && breaks.length > 0) {
-      reminderBubblePreview.innerText = breaks[Math.floor(Math.random() * breaks.length)] + " 💧";
+      reminderBubblePreview.innerText = breaks[Math.floor(Math.random() * breaks.length)];
     } else {
       reminderBubblePreview.innerText = "Time for a break!";
     }
@@ -243,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (greetings && greetings.length > 0) {
       greetingsBubblePreview.innerText = greetings[Math.floor(Math.random() * greetings.length)];
     } else {
-      greetingsBubblePreview.innerText = "Let's build something awesome today! ❤️";
+      greetingsBubblePreview.innerText = "Let's build something awesome today!";
     }
   };
 
