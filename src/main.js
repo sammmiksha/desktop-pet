@@ -195,7 +195,7 @@ ipcMain.on('open-settings', () => {
 ipcMain.on('drag-window', (event, { mouseX, mouseY, offsetX, offsetY }) => {
   if (petWindow) {
     // Keep pet inside the screen boundaries
-    const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+    const { width, height } = screen.getPrimaryDisplay().bounds;
     const bounds = petWindow.getBounds();
     
     let targetX = mouseX - offsetX;
@@ -233,7 +233,7 @@ ipcMain.on('show-context-menu', () => {
 
 ipcMain.on('move-pet', (event, { x, y }) => {
   if (petWindow) {
-    const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+    const { width, height } = screen.getPrimaryDisplay().bounds;
     const bounds = petWindow.getBounds();
 
     let targetX = Math.round(x);

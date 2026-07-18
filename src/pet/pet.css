@@ -145,7 +145,7 @@ svg {
 /* --------------------------------------------------------------------------
    1. Front View Animations (SIT / IDLE / SCRATCH)
    -------------------------------------------------------------------------- */
-.state-idle .head-group {
+.state-idle .head-bob-group {
   transform-origin: 100px 90px;
   animation: headBob 3s ease-in-out infinite;
 }
@@ -172,7 +172,7 @@ svg {
 }
 
 /* Sit State */
-.state-sit .head-group {
+.state-sit .head-bob-group {
   transform-origin: 100px 90px;
   animation: headBob 4s ease-in-out infinite;
 }
@@ -194,7 +194,7 @@ svg {
   transform-origin: 62px 142px;
   animation: legScratch 0.15s ease-in-out infinite;
 }
-.state-scratch .head-group {
+.state-scratch .head-bob-group {
   transform-origin: 100px 90px;
   transform: rotate(-8deg) translateY(4px);
 }
@@ -211,42 +211,142 @@ svg {
 /* --------------------------------------------------------------------------
    2. Side View Animations (WALK / RUN)
    -------------------------------------------------------------------------- */
-.state-walk .side-leg-fl {
-  transform-origin: 122px 135px;
-  animation: legWalkLeft 0.6s linear infinite;
+/* --------------------------------------------------------------------------
+   2. Side View Animations (WALK / RUN)
+   -------------------------------------------------------------------------- */
+/* Setup Joint Transform Origins */
+.state-walk .side-leg-bl-group {
+  transform-origin: 70px 132px;
+  animation: legWalkUpperLeft 0.6s linear infinite;
 }
-.state-walk .side-leg-fr {
-  transform-origin: 112px 135px;
-  animation: legWalkRight 0.6s linear infinite;
+.state-walk .side-leg-bl-lower-group {
+  transform-origin: 62px 152px;
+  animation: legWalkLowerLeft 0.6s linear infinite;
 }
-.state-walk .side-leg-bl {
-  transform-origin: 64px 135px;
-  animation: legWalkRight 0.6s linear infinite;
+
+.state-walk .side-leg-br-group {
+  transform-origin: 78px 132px;
+  animation: legWalkUpperRight 0.6s linear infinite;
 }
-.state-walk .side-leg-br {
-  transform-origin: 72px 135px;
-  animation: legWalkLeft 0.6s linear infinite;
+.state-walk .side-leg-br-lower-group {
+  transform-origin: 70px 152px;
+  animation: legWalkLowerRight 0.6s linear infinite;
 }
+
+.state-walk .side-leg-fl-group {
+  transform-origin: 122px 130px;
+  animation: legWalkUpperLeft 0.6s linear infinite;
+}
+.state-walk .side-leg-fl-lower-group {
+  transform-origin: 116px 150px;
+  animation: legWalkLowerLeft 0.6s linear infinite;
+}
+
+.state-walk .side-leg-fr-group {
+  transform-origin: 114px 130px;
+  animation: legWalkUpperRight 0.6s linear infinite;
+}
+.state-walk .side-leg-fr-lower-group {
+  transform-origin: 108px 150px;
+  animation: legWalkLowerRight 0.6s linear infinite;
+}
+
+/* Run State (Same gait, double speed) */
+.state-run .side-leg-bl-group {
+  transform-origin: 70px 132px;
+  animation: legWalkUpperLeft 0.3s linear infinite;
+}
+.state-run .side-leg-bl-lower-group {
+  transform-origin: 62px 152px;
+  animation: legWalkLowerLeft 0.3s linear infinite;
+}
+.state-run .side-leg-br-group {
+  transform-origin: 78px 132px;
+  animation: legWalkUpperRight 0.3s linear infinite;
+}
+.state-run .side-leg-br-lower-group {
+  transform-origin: 70px 152px;
+  animation: legWalkLowerRight 0.3s linear infinite;
+}
+.state-run .side-leg-fl-group {
+  transform-origin: 122px 130px;
+  animation: legWalkUpperLeft 0.3s linear infinite;
+}
+.state-run .side-leg-fl-lower-group {
+  transform-origin: 116px 150px;
+  animation: legWalkLowerLeft 0.3s linear infinite;
+}
+.state-run .side-leg-fr-group {
+  transform-origin: 114px 130px;
+  animation: legWalkUpperRight 0.3s linear infinite;
+}
+.state-run .side-leg-fr-lower-group {
+  transform-origin: 108px 150px;
+  animation: legWalkLowerRight 0.3s linear infinite;
+}
+
+/* Side Body & Tail Walk Cycles */
+.state-walk .side-body {
+  transform-origin: 95px 133px;
+  animation: sideBodyBounce 0.3s ease-in-out infinite alternate;
+}
+.state-run .side-body {
+  transform-origin: 95px 133px;
+  animation: sideBodyBounceRun 0.15s ease-in-out infinite alternate;
+}
+
 .state-walk .side-tail {
   transform-origin: 50px 122px;
   animation: tailWagFast 0.3s ease-in-out infinite alternate;
 }
+.state-run .side-tail {
+  transform-origin: 50px 122px;
+  animation: tailWagFast 0.15s ease-in-out infinite alternate;
+}
+
 .state-walk .side-head-group {
   transform-origin: 125px 90px;
   animation: headWalkBob 0.3s ease-in-out infinite alternate;
 }
-
-@keyframes legWalkLeft {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-18deg) translateY(-2px); }
-  50% { transform: rotate(0deg); }
-  75% { transform: rotate(18deg) translateY(0); }
+.state-run .side-head-group {
+  transform-origin: 125px 90px;
+  animation: headWalkBob 0.15s ease-in-out infinite alternate;
 }
-@keyframes legWalkRight {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(18deg) translateY(0); }
-  50% { transform: rotate(0deg); }
-  75% { transform: rotate(-18deg) translateY(-2px); }
+
+/* Keyframes for Joint Walk Cycle */
+@keyframes legWalkUpperLeft {
+  0%, 100% { transform: rotate(15deg); }
+  25% { transform: rotate(-20deg); }
+  50% { transform: rotate(15deg); }
+  75% { transform: rotate(25deg); }
+}
+@keyframes legWalkLowerLeft {
+  0%, 100% { transform: rotate(5deg); }
+  25% { transform: rotate(35deg); }
+  50% { transform: rotate(5deg); }
+  75% { transform: rotate(0deg); }
+}
+
+@keyframes legWalkUpperRight {
+  0%, 100% { transform: rotate(15deg); }
+  25% { transform: rotate(25deg); }
+  50% { transform: rotate(15deg); }
+  75% { transform: rotate(-20deg); }
+}
+@keyframes legWalkLowerRight {
+  0%, 100% { transform: rotate(5deg); }
+  25% { transform: rotate(0deg); }
+  50% { transform: rotate(5deg); }
+  75% { transform: rotate(35deg); }
+}
+
+@keyframes sideBodyBounce {
+  0% { transform: translateY(0) rotate(-0.5deg); }
+  100% { transform: translateY(-3.5px) rotate(0.5deg); }
+}
+@keyframes sideBodyBounceRun {
+  0% { transform: translateY(0) rotate(-1deg); }
+  100% { transform: translateY(-5px) rotate(1deg); }
 }
 @keyframes tailWagFast {
   0% { transform: rotate(-10deg); }
@@ -254,7 +354,7 @@ svg {
 }
 @keyframes headWalkBob {
   0% { transform: translateY(0) rotate(-1deg); }
-  100% { transform: translateY(-3px) rotate(1deg); }
+  100% { transform: translateY(-2px) rotate(1deg); }
 }
 
 /* --------------------------------------------------------------------------
@@ -294,7 +394,7 @@ svg {
   animation: tailWagFast 0.2s ease-in-out infinite alternate;
 }
 .state-stretch .stretch-body {
-  transform-origin: 64px 115px;
+  transform-origin: 64px 110px;
   animation: stretchBodyBreathe 2s ease-in-out infinite;
 }
 
@@ -307,16 +407,79 @@ svg {
    Eye Blinking (Front View only)
    -------------------------------------------------------------------------- */
 .eye-l-group {
-  transform-origin: 80px 68px;
+  transform-origin: 80px 62px;
   animation: blinkCycle 4.2s infinite;
 }
 
 .eye-r-group {
-  transform-origin: 120px 68px;
+  transform-origin: 120px 62px;
   animation: blinkCycle 4.2s infinite;
 }
 
 @keyframes blinkCycle {
   0%, 96%, 100% { transform: scaleY(1); }
   98% { transform: scaleY(0.05); }
+}
+
+
+/* ==========================================================================
+   Micro Animations CSS Layer
+   ========================================================================== */
+.ear-twitch-l .ear-l {
+  transform-origin: 68px 54px;
+  animation: earTwitchL 0.4s ease-out;
+}
+.ear-twitch-r .ear-r {
+  transform-origin: 132px 54px;
+  animation: earTwitchR 0.4s ease-out;
+}
+@keyframes earTwitchL {
+  0% { transform: rotate(0deg); }
+  35% { transform: rotate(-12deg); }
+  70% { transform: rotate(6deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes earTwitchR {
+  0% { transform: rotate(0deg); }
+  35% { transform: rotate(12deg); }
+  70% { transform: rotate(-6deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.sniff .nose {
+  transform-origin: 100px 72px;
+  animation: noseSniff 0.15s ease-in-out infinite alternate;
+}
+@keyframes noseSniff {
+  0% { transform: translateY(0px) scale(1); }
+  100% { transform: translateY(-1.5px) scale(1.05); }
+}
+
+.paw-shift .leg-fl-group {
+  transform-origin: 78px 130px;
+  animation: pawLift 0.6s ease-in-out;
+}
+.paw-shift-r .leg-fr-group {
+  transform-origin: 118px 130px;
+  animation: pawLift 0.6s ease-in-out;
+}
+@keyframes pawLift {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-3.5px) rotate(-4deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.micro-wag .tail {
+  animation: tailWagFast 0.15s ease-in-out infinite alternate !important;
+}
+
+/* Playful / Energetic personality speed shifts */
+.playful-wag .tail {
+  animation-duration: 1.8s !important;
+}
+
+/* Curling up to Sleep rotation */
+.curling-up {
+  transition: transform 1s ease-in-out;
+  transform: rotate(-15deg) scale(0.95);
 }
