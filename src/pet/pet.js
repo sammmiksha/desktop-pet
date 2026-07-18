@@ -10,6 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const sparkleLeft = document.querySelector('.sparkle-l');
   const sparkleRight = document.querySelector('.sparkle-r');
   
+  // Side view tracking elements
+  const sideHead = document.querySelector('.side-head-group');
+  const sidePupil = document.querySelector('.side-pupil');
+  const sideSparkle = document.querySelector('.side-sparkle');
+  
   const speechBubble = document.getElementById('speech-bubble');
   const bubbleContent = document.getElementById('bubble-content');
 
@@ -29,6 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
   let isDragging = false;
   let dragOffset = { x: 0, y: 0 };
   let currentPetPosition = { x: 0, y: 0 };
+  
+  // High fidelity behavior tracking variables
+  let lastMousePosition = { x: 400, y: 300 };
+  let isGoingToSleep = false;
+  let isDeliveringReminder = false;
+  let pendingReminderText = "";
+  let isLookingAround = false;
   
   // Roaming / Wandering Target
   let wanderTarget = null;
@@ -63,8 +75,10 @@ document.addEventListener('DOMContentLoaded', () => {
     currentPetPosition.y = initialPos.y;
 
     ipcRenderer.on('window-position', (event, { x, y }) => {
-      currentPetPosition.x = x;
-      currentPetPosition.y = y;
+      if (currentState !== STATES.WALK && !isDragging) {
+        currentPetPosition.x = x;
+        currentPetPosition.y = y;
+      }
     });
 
     // Initial greeting
@@ -143,11 +157,40 @@ document.addEventListener('DOMContentLoaded', () => {
       hideSpeechBubble();
     });
 
+    // Setup hybrid spritesheet / image asset loader and fallback controls
+    document.querySelectorAll('image').forEach(img => {
+      img.addEventListener('load', () => {
+        const parent = img.parentElement;
+        if (parent) {
+          const shapes = parent.querySelectorAll('path, circle, ellipse, polygon, rect');
+          shapes.forEach(shape => {
+            if (shape !== img) {
+              shape.setAttribute('visibility', 'hidden');
+            }
+          });
+        }
+      });
+
+      img.addEventListener('error', () => {
+        const currentHref = img.getAttribute('href') || '';
+        if (currentHref.endsWith('.webp')) {
+          img.setAttribute('href', currentHref.replace('.webp', '.png'));
+        } else {
+          img.setAttribute('visibility', 'hidden');
+        }
+      });
+      
+      const src = img.getAttribute('href');
+      img.setAttribute('href', '');
+      img.setAttribute('href', src);
+    });
+
     // Start loops & engines
     requestAnimationFrame(animationTick);
     startBehaviorEngine();
     startReminderTimer();
     runDistractionCycle();
+    startMicroAnimationCycle();
     
     // Send initial status to main process
     sendStatusUpdate();
@@ -213,17 +256,42 @@ document.addEventListener('DOMContentLoaded', () => {
     currentEyeOffset.x += (targetEyeOffset.x - currentEyeOffset.x) * 0.15;
     currentEyeOffset.y += (targetEyeOffset.y - currentEyeOffset.y) * 0.15;
 
-    // Apply eye translations
+    // Apply eye translations directly to SVG cx/cy attributes for bulletproof rendering
     if (currentState !== STATES.SLEEP) {
-      pupilLeft.style.transform = `translate(${currentEyeOffset.x}px, ${currentEyeOffset.y}px)`;
-      pupilRight.style.transform = `translate(${currentEyeOffset.x}px, ${currentEyeOffset.y}px)`;
-      sparkleLeft.style.transform = `translate(${currentEyeOffset.x * 0.7}px, ${currentEyeOffset.y * 0.7}px)`;
-      sparkleRight.style.transform = `translate(${currentEyeOffset.x * 0.7}px, ${currentEyeOffset.y * 0.7}px)`;
+      pupilLeft.setAttribute('cx', 80 + currentEyeOffset.x);
+      pupilLeft.setAttribute('cy', 58 + currentEyeOffset.y);
+      pupilRight.setAttribute('cx', 120 + currentEyeOffset.x);
+      pupilRight.setAttribute('cy', 58 + currentEyeOffset.y);
+      
+      sparkleLeft.setAttribute('cx', 78 + currentEyeOffset.x * 0.7);
+      sparkleLeft.setAttribute('cy', 55 + currentEyeOffset.y * 0.7);
+      sparkleRight.setAttribute('cx', 118 + currentEyeOffset.x * 0.7);
+      sparkleRight.setAttribute('cy', 55 + currentEyeOffset.y * 0.7);
+
+      // Track side eye pupils too (when walking/running/stretching)
+      if (sidePupil && sideSparkle) {
+        sidePupil.setAttribute('cx', 140 + currentEyeOffset.x * 0.8);
+        sidePupil.setAttribute('cy', 74 + currentEyeOffset.y * 0.8);
+        sideSparkle.setAttribute('cx', 138.5 + currentEyeOffset.x * 0.5);
+        sideSparkle.setAttribute('cy', 72 + currentEyeOffset.y * 0.5);
+      }
     } else {
-      pupilLeft.style.transform = '';
-      pupilRight.style.transform = '';
-      sparkleLeft.style.transform = '';
-      sparkleRight.style.transform = '';
+      pupilLeft.setAttribute('cx', 80);
+      pupilLeft.setAttribute('cy', 58);
+      pupilRight.setAttribute('cx', 120);
+      pupilRight.setAttribute('cy', 58);
+      
+      sparkleLeft.setAttribute('cx', 78);
+      sparkleLeft.setAttribute('cy', 55);
+      sparkleRight.setAttribute('cx', 118);
+      sparkleRight.setAttribute('cy', 55);
+
+      if (sidePupil && sideSparkle) {
+        sidePupil.setAttribute('cx', 140);
+        sidePupil.setAttribute('cy', 74);
+        sideSparkle.setAttribute('cx', 138.5);
+        sideSparkle.setAttribute('cy', 72);
+      }
     }
 
     // 2. Head tilt interpolation (adds rich aesthetics)
@@ -232,9 +300,16 @@ document.addEventListener('DOMContentLoaded', () => {
     currentHeadTranslate.y += (targetHeadTranslate.y - currentHeadTranslate.y) * 0.12;
 
     if (currentState !== STATES.SLEEP) {
-      headEl.style.transform = `rotate(${currentHeadRotate}deg) translate(${currentHeadTranslate.x}px, ${currentHeadTranslate.y}px)`;
+      const transformString = `rotate(${currentHeadRotate}deg) translate(${currentHeadTranslate.x}px, ${currentHeadTranslate.y}px)`;
+      headEl.style.transform = transformString;
+      if (sideHead) {
+        sideHead.style.transform = transformString;
+      }
     } else {
       headEl.style.transform = '';
+      if (sideHead) {
+        sideHead.style.transform = '';
+      }
     }
 
     // 3. Wandering physics frame step
@@ -244,8 +319,36 @@ document.addEventListener('DOMContentLoaded', () => {
       const dist = Math.hypot(dx, dy);
 
       if (dist < 4) {
-        applyState(STATES.SIT);
         wanderTarget = null;
+        
+        if (isGoingToSleep) {
+          isGoingToSleep = false;
+          dogEl.classList.add('curling-up');
+          setTimeout(() => {
+            dogEl.classList.remove('curling-up');
+            applyState(STATES.SLEEP);
+          }, 1000);
+        } else if (isDeliveringReminder) {
+          isDeliveringReminder = false;
+          applyState(STATES.SIT);
+          dogEl.classList.add('micro-wag');
+          setTimeout(() => dogEl.classList.remove('micro-wag'), 1500);
+          showSpeechBubble(pendingReminderText, 12000);
+        } else {
+          // Play stand -> walk -> reach -> stop -> look around -> sit sequence
+          applyState(STATES.SIT);
+          isLookingAround = true;
+          targetHeadRotate = 10;
+          setTimeout(() => {
+            if (isLookingAround) targetHeadRotate = -10;
+          }, 800);
+          setTimeout(() => {
+            if (isLookingAround) {
+              targetHeadRotate = 0;
+              isLookingAround = false;
+            }
+          }, 1600);
+        }
       } else {
         const stepX = (dx / dist) * wanderSpeed;
         const stepY = (dy / dist) * wanderSpeed;
@@ -306,10 +409,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function startBehaviorEngine() {
     if (wanderTimer) clearInterval(wanderTimer);
 
+    // Timing varies (20 to 60 seconds) so it never feels predictable
     const getBehaviorCheckInterval = () => {
-      if (config.activityLevel === 'calm') return 25000; // Check every 25 seconds
-      if (config.activityLevel === 'energetic') return 10000; // Check every 10 seconds
-      return 17000; // Balanced (default)
+      return 20000 + Math.random() * 40000;
     };
 
     wanderTimer = setInterval(() => {
@@ -317,19 +419,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const roll = Math.random();
 
-      // Configure probabilities based on profile
-      let pSit = 0.70;
-      let pWalk = 0.10;
-      let pScratch = 0.10;
+      // Configure probabilities based on profile setting
+      let pSit = 0.50;
+      let pWalk = 0.25;
+      let pScratch = 0.15; // remaining 0.10 is stretch
 
       if (config.activityLevel === 'calm') {
-        pSit = 0.85;
-        pWalk = 0.05;
-        pScratch = 0.05; // remaining 0.05 is stretch
+        pSit = 0.70;
+        pWalk = 0.15;
+        pScratch = 0.10;
+        dogEl.classList.remove('playful-wag');
       } else if (config.activityLevel === 'energetic') {
-        pSit = 0.45;
-        pWalk = 0.25;
-        pScratch = 0.15; // remaining 0.15 is stretch
+        pSit = 0.25;
+        pWalk = 0.40;
+        pScratch = 0.20;
+        dogEl.classList.add('playful-wag');
+      } else {
+        dogEl.classList.remove('playful-wag');
       }
 
       if (roll < pSit) {
@@ -345,7 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
         applyState(STATES.STRETCH);
         setTimeout(() => {
           if (currentState === STATES.STRETCH) applyState(STATES.SIT);
-        }, 2000);
+        }, 2500);
       }
     }, getBehaviorCheckInterval());
   }
@@ -362,6 +468,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     wanderTarget = { x: targetX, y: targetY };
     applyState(STATES.WALK);
+  }
+
+  // Micro Animations Cycle (Happens every 2-8 seconds while sitting/standing still)
+  let microAnimTimer = null;
+  function startMicroAnimationCycle() {
+    if (microAnimTimer) clearTimeout(microAnimTimer);
+
+    const nextInterval = 2000 + Math.random() * 6000;
+
+    microAnimTimer = setTimeout(() => {
+      if ((currentState === STATES.SIT || currentState === STATES.SCRATCH) && !isDragging) {
+        const roll = Math.random();
+        
+        if (roll < 0.15) {
+          dogEl.classList.add('ear-twitch-l');
+          setTimeout(() => dogEl.classList.remove('ear-twitch-l'), 500);
+        } else if (roll < 0.30) {
+          dogEl.classList.add('ear-twitch-r');
+          setTimeout(() => dogEl.classList.remove('ear-twitch-r'), 500);
+        } else if (roll < 0.45) {
+          dogEl.classList.add('sniff');
+          setTimeout(() => dogEl.classList.remove('sniff'), 800);
+        } else if (roll < 0.60) {
+          dogEl.classList.add('paw-shift');
+          setTimeout(() => dogEl.classList.remove('paw-shift'), 650);
+        } else if (roll < 0.70) {
+          dogEl.classList.add('paw-shift-r');
+          setTimeout(() => dogEl.classList.remove('paw-shift-r'), 650);
+        } else if (roll < 0.85) {
+          dogEl.classList.add('micro-wag');
+          setTimeout(() => dogEl.classList.remove('micro-wag'), 1200);
+        } else {
+          tongueEl.classList.remove('hidden');
+          setTimeout(() => tongueEl.classList.add('hidden'), 1000);
+        }
+      }
+      startMicroAnimationCycle();
+    }, nextInterval);
   }
 
   // Health Reminders
@@ -401,6 +545,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function showReminder() {
     let reminders = [
+      "You've been doing great. Maybe stretch for a minute? 🐶",
       "Time for a quick stretch break!",
       "Water check! Take a sip of water, friend.",
       "Rest your eyes! Look at something 20 feet away.",
@@ -411,16 +556,23 @@ document.addEventListener('DOMContentLoaded', () => {
       reminders = config.breakMessages;
     }
 
-    const reminder = reminders[Math.floor(Math.random() * reminders.length)];
-    
-    applyState(STATES.STRETCH);
-    showSpeechBubble(reminder, 10000);
-    tongueEl.classList.remove('hidden');
+    pendingReminderText = reminders[Math.floor(Math.random() * reminders.length)];
 
-    setTimeout(() => {
-      tongueEl.classList.add('hidden');
-      if (currentState === STATES.STRETCH) applyState(STATES.SIT);
-    }, 4000);
+    // Walk near the user's mouse cursor
+    const screenWidth = window.screen.availWidth;
+    const screenHeight = window.screen.availHeight;
+
+    // Offset slightly from cursor position
+    let targetX = lastMousePosition.x - 120;
+    let targetY = lastMousePosition.y - 120;
+
+    // Clamp inside screen bounds
+    targetX = Math.max(40, Math.min(screenWidth - 290, targetX));
+    targetY = Math.max(40, Math.min(screenHeight - 240, targetY));
+
+    isDeliveringReminder = true;
+    wanderTarget = { x: targetX, y: targetY };
+    applyState(STATES.WALK);
   }
 
   // Speech Bubbles
@@ -453,12 +605,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Cursor IPC Handler
   ipcRenderer.on('cursor-update', (event, { dx, dy, screenX, screenY }) => {
+    lastMousePosition.x = screenX;
+    lastMousePosition.y = screenY;
+
     if (currentState === STATES.SLEEP || isDragging) return;
 
     const distance = Math.hypot(dx, dy);
     const angle = Math.atan2(dy, dx);
 
-    // 1. Awareness Limit (400px): if cursor is too far, look forward
+    // 1. Awareness Limit: if cursor is too far, center eyes/head
     if (distance > 400) {
       if (!isDistracted) {
         targetEyeOffset.x = 0;
@@ -469,19 +624,10 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // If looking away (distracted), do not track cursor with eyes, but relax head tilt
+    // If looking away (distracted), do not track cursor with eyes
     if (isDistracted) {
-      if (distance <= 200) {
-        // tiny tilt if cursor is extremely close, even when distracted
-        const maxHeadTilt = 6;
-        const headTiltVal = Math.min(distance * 0.04, maxHeadTilt);
-        targetHeadRotate = Math.cos(angle) * headTiltVal * 0.5;
-        targetHeadTranslate.x = Math.cos(angle) * 2;
-        targetHeadTranslate.y = Math.sin(angle) * 2;
-      } else {
-        targetHeadRotate = 0;
-        targetHeadTranslate = { x: 0, y: 0 };
-      }
+      targetHeadRotate = 0;
+      targetHeadTranslate = { x: 0, y: 0 };
       return;
     }
 
@@ -509,11 +655,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.on('idle-state-change', (event, shouldSleep) => {
     if (shouldSleep) {
-      applyState(STATES.SLEEP);
+      // Walk to a bottom corner first
+      const screenWidth = window.screen.availWidth;
+      const screenHeight = window.screen.availHeight;
+      const cornerX = Math.random() < 0.5 ? 40 : screenWidth - 290;
+      const cornerY = screenHeight - 240;
+
+      isGoingToSleep = true;
+      wanderTarget = { x: cornerX, y: cornerY };
+      applyState(STATES.WALK);
     } else {
-      applyState(STATES.SIT);
-      showSpeechBubble("Welcome back! Ready to get to work?", 6000);
+      // Wake up sequence
+      isGoingToSleep = false;
+      applyState(STATES.STRETCH);
+      
+      // Excited tail wag
+      dogEl.classList.add('micro-wag');
+      setTimeout(() => dogEl.classList.remove('micro-wag'), 2000);
+      
+      showSpeechBubble("Welcome back! Ready to get to work? Let's stretch!", 7000);
       lastReminderTime = Date.now();
+      
+      setTimeout(() => {
+        if (currentState === STATES.STRETCH) applyState(STATES.SIT);
+      }, 3000);
     }
   });
 
