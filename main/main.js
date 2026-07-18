@@ -1,6 +1,6 @@
 const { app, BrowserWindow, screen, ipcMain, Menu, Tray, powerMonitor } = require('electron');
 const path = require('path');
-const configStore = require('./config-store');
+const configStore = require('../settings/config-store');
 
 let petWindow = null;
 let dashboardWindow = null;
@@ -55,7 +55,7 @@ function createPetWindow(config) {
 
   // Enable click-through by default
   petWindow.setIgnoreMouseEvents(true, { forward: true });
-  petWindow.loadFile(path.join(__dirname, 'pet', 'pet.html'));
+  petWindow.loadFile(path.join(__dirname, '../engine/renderer', 'pet.html'));
 
   petWindow.on('move', () => {
     const bounds = petWindow.getBounds();
@@ -89,7 +89,7 @@ function openDashboard() {
 
   // Hide default menu bar
   dashboardWindow.setMenuBarVisibility(false);
-  dashboardWindow.loadFile(path.join(__dirname, 'dashboard', 'dashboard.html'));
+  dashboardWindow.loadFile(path.join(__dirname, '../dashboard', 'dashboard.html'));
 
   dashboardWindow.on('closed', () => {
     dashboardWindow = null;
@@ -262,7 +262,6 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   // Keep app running in background even if dashboard is closed
-  // The app only quits if explicitly closed via pet context menu or when petWindow is closed and no dashboard is active
   if (process.platform !== 'darwin' && !petWindow) {
     app.quit();
   }

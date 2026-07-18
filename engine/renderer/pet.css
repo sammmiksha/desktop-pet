@@ -215,146 +215,46 @@ svg {
    2. Side View Animations (WALK / RUN)
    -------------------------------------------------------------------------- */
 /* Setup Joint Transform Origins */
-.state-walk .side-leg-bl-group {
-  transform-origin: 70px 132px;
-  animation: legWalkUpperLeft 0.6s linear infinite;
-}
-.state-walk .side-leg-bl-lower-group {
-  transform-origin: 62px 152px;
-  animation: legWalkLowerLeft 0.6s linear infinite;
+/* Hide all spritesheet frames by default */
+.side-body-spritesheet .frame {
+  opacity: 0;
+  pointer-events: none;
 }
 
-.state-walk .side-leg-br-group {
-  transform-origin: 78px 132px;
-  animation: legWalkUpperRight 0.6s linear infinite;
-}
-.state-walk .side-leg-br-lower-group {
-  transform-origin: 70px 152px;
-  animation: legWalkLowerRight 0.6s linear infinite;
+/* Play walk spritesheet loop (4 frames) */
+.state-walk .side-body-spritesheet .frame-1 { animation: framePlay4 0.6s step-start infinite; animation-delay: 0.0s; }
+.state-walk .side-body-spritesheet .frame-2 { animation: framePlay4 0.6s step-start infinite; animation-delay: 0.15s; }
+.state-walk .side-body-spritesheet .frame-3 { animation: framePlay4 0.6s step-start infinite; animation-delay: 0.30s; }
+.state-walk .side-body-spritesheet .frame-4 { animation: framePlay4 0.6s step-start infinite; animation-delay: 0.45s; }
+
+/* Play run spritesheet loop (double tempo) */
+.state-run .side-body-spritesheet .frame-1 { animation: framePlay4 0.36s step-start infinite; animation-delay: 0.0s; }
+.state-run .side-body-spritesheet .frame-2 { animation: framePlay4 0.36s step-start infinite; animation-delay: 0.09s; }
+.state-run .side-body-spritesheet .frame-3 { animation: framePlay4 0.36s step-start infinite; animation-delay: 0.18s; }
+.state-run .side-body-spritesheet .frame-4 { animation: framePlay4 0.36s step-start infinite; animation-delay: 0.27s; }
+
+@keyframes framePlay4 {
+  0%, 24% { opacity: 1; pointer-events: auto; }
+  25%, 100% { opacity: 0; pointer-events: none; }
 }
 
-.state-walk .side-leg-fl-group {
-  transform-origin: 122px 130px;
-  animation: legWalkUpperLeft 0.6s linear infinite;
+/* Bouncy Walk/Run Head Bob Animations */
+.state-walk .side-head-bob-group {
+  transform-origin: 124px 115px;
+  animation: walkHeadBob 0.3s ease-in-out infinite alternate;
 }
-.state-walk .side-leg-fl-lower-group {
-  transform-origin: 116px 150px;
-  animation: legWalkLowerLeft 0.6s linear infinite;
-}
-
-.state-walk .side-leg-fr-group {
-  transform-origin: 114px 130px;
-  animation: legWalkUpperRight 0.6s linear infinite;
-}
-.state-walk .side-leg-fr-lower-group {
-  transform-origin: 108px 150px;
-  animation: legWalkLowerRight 0.6s linear infinite;
+.state-run .side-head-bob-group {
+  transform-origin: 124px 115px;
+  animation: walkHeadBobRun 0.18s ease-in-out infinite alternate;
 }
 
-/* Run State (Same gait, double speed) */
-.state-run .side-leg-bl-group {
-  transform-origin: 70px 132px;
-  animation: legWalkUpperLeft 0.3s linear infinite;
+@keyframes walkHeadBob {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(2px) rotate(-1deg); }
 }
-.state-run .side-leg-bl-lower-group {
-  transform-origin: 62px 152px;
-  animation: legWalkLowerLeft 0.3s linear infinite;
-}
-.state-run .side-leg-br-group {
-  transform-origin: 78px 132px;
-  animation: legWalkUpperRight 0.3s linear infinite;
-}
-.state-run .side-leg-br-lower-group {
-  transform-origin: 70px 152px;
-  animation: legWalkLowerRight 0.3s linear infinite;
-}
-.state-run .side-leg-fl-group {
-  transform-origin: 122px 130px;
-  animation: legWalkUpperLeft 0.3s linear infinite;
-}
-.state-run .side-leg-fl-lower-group {
-  transform-origin: 116px 150px;
-  animation: legWalkLowerLeft 0.3s linear infinite;
-}
-.state-run .side-leg-fr-group {
-  transform-origin: 114px 130px;
-  animation: legWalkUpperRight 0.3s linear infinite;
-}
-.state-run .side-leg-fr-lower-group {
-  transform-origin: 108px 150px;
-  animation: legWalkLowerRight 0.3s linear infinite;
-}
-
-/* Side Body & Tail Walk Cycles */
-.state-walk .side-body {
-  transform-origin: 95px 133px;
-  animation: sideBodyBounce 0.3s ease-in-out infinite alternate;
-}
-.state-run .side-body {
-  transform-origin: 95px 133px;
-  animation: sideBodyBounceRun 0.15s ease-in-out infinite alternate;
-}
-
-.state-walk .side-tail {
-  transform-origin: 50px 122px;
-  animation: tailWagFast 0.3s ease-in-out infinite alternate;
-}
-.state-run .side-tail {
-  transform-origin: 50px 122px;
-  animation: tailWagFast 0.15s ease-in-out infinite alternate;
-}
-
-.state-walk .side-head-group {
-  transform-origin: 125px 90px;
-  animation: headWalkBob 0.3s ease-in-out infinite alternate;
-}
-.state-run .side-head-group {
-  transform-origin: 125px 90px;
-  animation: headWalkBob 0.15s ease-in-out infinite alternate;
-}
-
-/* Keyframes for Joint Walk Cycle */
-@keyframes legWalkUpperLeft {
-  0%, 100% { transform: rotate(15deg); }
-  25% { transform: rotate(-20deg); }
-  50% { transform: rotate(15deg); }
-  75% { transform: rotate(25deg); }
-}
-@keyframes legWalkLowerLeft {
-  0%, 100% { transform: rotate(5deg); }
-  25% { transform: rotate(35deg); }
-  50% { transform: rotate(5deg); }
-  75% { transform: rotate(0deg); }
-}
-
-@keyframes legWalkUpperRight {
-  0%, 100% { transform: rotate(15deg); }
-  25% { transform: rotate(25deg); }
-  50% { transform: rotate(15deg); }
-  75% { transform: rotate(-20deg); }
-}
-@keyframes legWalkLowerRight {
-  0%, 100% { transform: rotate(5deg); }
-  25% { transform: rotate(0deg); }
-  50% { transform: rotate(5deg); }
-  75% { transform: rotate(35deg); }
-}
-
-@keyframes sideBodyBounce {
-  0% { transform: translateY(0) rotate(-0.5deg); }
-  100% { transform: translateY(-3.5px) rotate(0.5deg); }
-}
-@keyframes sideBodyBounceRun {
-  0% { transform: translateY(0) rotate(-1deg); }
-  100% { transform: translateY(-5px) rotate(1deg); }
-}
-@keyframes tailWagFast {
-  0% { transform: rotate(-10deg); }
-  100% { transform: rotate(15deg); }
-}
-@keyframes headWalkBob {
-  0% { transform: translateY(0) rotate(-1deg); }
-  100% { transform: translateY(-2px) rotate(1deg); }
+@keyframes walkHeadBobRun {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(3.5px) rotate(-2deg); }
 }
 
 /* --------------------------------------------------------------------------

@@ -8,14 +8,14 @@ class ConfigStore {
     this.defaults = {
       name: 'Buddy',
       remindersEnabled: true,
-      reminderPreset: '1h', // 'off', '30m', '45m', '1h', '2h', 'custom'
+      reminderPreset: '1h', // 'off', '15m', '30m', '45m', '1h', '2h', 'custom'
       customReminderHours: 1,
       customReminderMinutes: 30,
       startupLaunch: false,
       activityLevel: 'balanced', // 'calm', 'balanced', 'energetic'
       speed: 5, // 1 to 10 slider
       soundEnabled: true,
-      greetingsPreset: 'friendly', // 'friendly', 'professional', 'funny', 'motivational', 'custom'
+      greetingsPreset: 'friendly',
       morningGreetings: [
         "Hi, how are you? Let's start the day with great ideas!",
         "Good morning! Ready to build something awesome?",
