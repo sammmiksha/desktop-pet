@@ -16,7 +16,7 @@ class BehaviorTree {
     if (this.behaviorTimer) clearInterval(this.behaviorTimer);
 
     const getBehaviorCheckInterval = () => {
-      return 20000 + Math.random() * 40000;
+      return 8000 + Math.random() * 12000; // State transition tick every 8 to 20 seconds
     };
 
     this.behaviorTimer = setInterval(() => {
@@ -24,20 +24,20 @@ class BehaviorTree {
 
       const roll = Math.random();
 
-      // Configure probabilities based on profile settings
-      let pSit = 0.50;
-      let pWalk = 0.25;
-      let pScratch = 0.15; // remaining 0.10 is stretch
+      // Configure probabilities based on profile settings - high walking likelihood
+      let pSit = 0.20;
+      let pWalk = 0.50;
+      let pScratch = 0.15; // remaining 0.15 is stretch & yawn
 
       if (this.Engine.config.activityLevel === 'calm') {
-        pSit = 0.70;
-        pWalk = 0.15;
+        pSit = 0.55;
+        pWalk = 0.25;
         pScratch = 0.10;
         this.Engine.elements.dogEl.classList.remove('playful-wag');
       } else if (this.Engine.config.activityLevel === 'energetic') {
-        pSit = 0.25;
-        pWalk = 0.40;
-        pScratch = 0.20;
+        pSit = 0.10;
+        pWalk = 0.75;
+        pScratch = 0.10;
         this.Engine.elements.dogEl.classList.add('playful-wag');
       } else {
         this.Engine.elements.dogEl.classList.remove('playful-wag');
@@ -52,6 +52,11 @@ class BehaviorTree {
         setTimeout(() => {
           if (this.Engine.currentState === this.Engine.STATES.SCRATCH) this.Engine.applyState(this.Engine.STATES.SIT);
         }, 3000);
+      } else if (roll < pSit + pWalk + pScratch + 0.08) {
+        this.Engine.applyState(this.Engine.STATES.YAWN);
+        setTimeout(() => {
+          if (this.Engine.currentState === this.Engine.STATES.YAWN) this.Engine.applyState(this.Engine.STATES.SIT);
+        }, 2000);
       } else {
         this.Engine.applyState(this.Engine.STATES.STRETCH);
         setTimeout(() => {
@@ -65,6 +70,8 @@ class BehaviorTree {
     if (this.reminderTimer) clearInterval(this.reminderTimer);
 
     const getReminderIntervalMs = () => {
+      if (this.Engine.config.reminderPreset === '2m') return 2 * 60 * 1000;
+      if (this.Engine.config.reminderPreset === '5m') return 5 * 60 * 1000;
       if (this.Engine.config.reminderPreset === '15m') return 15 * 60 * 1000;
       if (this.Engine.config.reminderPreset === '30m') return 30 * 60 * 1000;
       if (this.Engine.config.reminderPreset === '45m') return 45 * 60 * 1000;

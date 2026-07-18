@@ -55,9 +55,9 @@ class MovementEngine {
         });
 
         if (stepX < 0) {
-          this.Engine.elements.dogEl.classList.add('mirror');
+          this.Engine.setFacing('left');
         } else if (stepX > 0) {
-          this.Engine.elements.dogEl.classList.remove('mirror');
+          this.Engine.setFacing('right');
         }
       }
     }
@@ -79,16 +79,9 @@ class MovementEngine {
       this.Engine.showSpeechBubble(this.Engine.pendingReminderText, 12000);
     } else {
       this.Engine.applyState(this.Engine.STATES.SIT);
-      this.Engine.isLookingAround = true;
-      this.Engine.targetHeadRotate = 10;
+      this.Engine.elements.dogEl.classList.add('arrive-look');
       setTimeout(() => {
-        if (this.Engine.isLookingAround) this.Engine.targetHeadRotate = -10;
-      }, 800);
-      setTimeout(() => {
-        if (this.Engine.isLookingAround) {
-          this.Engine.targetHeadRotate = 0;
-          this.Engine.isLookingAround = false;
-        }
+        this.Engine.elements.dogEl.classList.remove('arrive-look');
       }, 1600);
     }
   }

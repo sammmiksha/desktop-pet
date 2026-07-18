@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -14,372 +15,375 @@ html, body {
   height: 250px;
   position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 #dog {
-  width: 150px;
-  height: 150px;
-  cursor: grab;
+  width: 210px;
+  height: 210px;
   position: relative;
-  transition: transform 0.1s ease;
+  cursor: grab;
+  transform-origin: 50% 86%;
+  transition: transform 160ms ease;
 }
 
 #dog:active {
   cursor: grabbing;
 }
 
-svg {
-  width: 100%;
-  height: 100%;
+.dog-stage {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 86%;
 }
 
-/* Mirror the dog when walking left */
-.mirror {
+.dog-art {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 86%;
+  animation: aliveBreathe 3.6s ease-in-out infinite;
+}
+
+.dog-render-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform-origin: 50% 86%;
+}
+
+.dog-render-layer.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dog-pose {
+  transition: opacity 120ms ease;
+}
+
+.walk-frame {
+  transition: none;
+}
+
+.eye-rig {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.eye-rig.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tracking-eye {
+  position: absolute;
+  width: 6.4%;
+  height: 8.1%;
+  overflow: hidden;
+  border: 1px solid rgba(88, 90, 103, 0.42);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.9) 0 18%, transparent 19%),
+    linear-gradient(145deg, #f7f8fb 0%, #dfe4ed 100%);
+  box-shadow: inset 0 -2px 3px rgba(107, 114, 128, 0.22);
+}
+
+.tracking-pupil {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  width: 45%;
+  height: 48%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 36% 30%, #ffffff 0 13%, transparent 15%),
+    #20242f;
+  transform: translate(calc(-50% + var(--eye-x, 0px)), calc(-50% + var(--eye-y, 0px)));
+  transition: transform 40ms linear;
+}
+
+.facing-right .tracking-eye-far {
+  left: 51.8%;
+  top: 25.4%;
+  transform: translate(-50%, -50%) rotate(-8deg) scale(0.82);
+}
+
+.facing-right .tracking-eye-near {
+  left: 62.4%;
+  top: 23.3%;
+  transform: translate(-50%, -50%) rotate(-9deg);
+}
+
+.facing-left .tracking-eye-far {
+  left: 48.2%;
+  top: 25.4%;
+  transform: translate(-50%, -50%) rotate(8deg) scale(0.82);
+}
+
+.facing-left .tracking-eye-near {
+  left: 37.6%;
+  top: 23.3%;
+  transform: translate(-50%, -50%) rotate(9deg);
+}
+
+.dog-shadow {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 128px;
+  height: 18px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.16);
+  filter: blur(3px);
+  transform: translateX(-50%);
+  transform-origin: center;
+  animation: shadowPulse 3.6s ease-in-out infinite;
+}
+
+.state-walk .dog-art,
+.state-run .dog-art {
+  animation: walkBodyBounce 420ms ease-in-out infinite alternate;
+}
+
+.state-sleep .dog-art {
+  animation: sleepBreathe 4.8s ease-in-out infinite;
+}
+
+.state-stretch .dog-art {
+  animation: stretchSettle 2.2s ease-in-out infinite;
+}
+
+.state-scratch .dog-art {
+  animation: scratchBounce 180ms ease-in-out infinite alternate;
+}
+
+.state-yawn .dog-art {
+  animation: yawnSway 2s ease-in-out infinite;
+}
+
+.facing-right .dog-stage {
   transform: scaleX(-1);
+}
+
+.facing-right.state-idle .dog-stage,
+.facing-right.state-sit .dog-stage {
+  transform: none;
+}
+
+.cursor-watch .dog-stage {
+  transform: translate(var(--look-x, 0), var(--look-y, 0)) rotate(var(--look-rotate, 0deg));
+}
+
+.facing-right.cursor-watch .dog-stage {
+  transform: scaleX(-1) translate(var(--look-x, 0), var(--look-y, 0)) rotate(var(--look-rotate, 0deg));
+}
+
+.facing-right.state-idle.cursor-watch .dog-stage,
+.facing-right.state-sit.cursor-watch .dog-stage {
+  transform: translate(var(--look-x, 0), var(--look-y, 0)) rotate(var(--look-rotate, 0deg));
+}
+
+.arrive-look .dog-art {
+  animation: arriveLook 1.6s ease-in-out;
+}
+
+.micro-wag .dog-art {
+  animation: happyWiggle 280ms ease-in-out infinite alternate;
+}
+
+.ear-twitch-l .dog-art,
+.ear-twitch-r .dog-art,
+.sniff .dog-art,
+.paw-shift .dog-art,
+.paw-shift-r .dog-art {
+  animation: smallAttention 500ms ease-out;
+}
+
+.dragging .dog-art {
+  animation: dragWiggle 240ms ease-in-out infinite alternate;
+}
+
+.curling-up .dog-art {
+  animation: curlIntoSleep 1s ease-in-out forwards;
 }
 
 .hidden {
   display: none !important;
 }
 
-/* ==========================================================================
-   Multi-pose View Toggles (Matches Character Model Sheet Poses)
-   ========================================================================== */
-.view-front,
-.view-side,
-.view-sleep,
-.view-stretch {
-  display: none !important;
-}
-
-/* Front View states (Sit, Idle, Scratch) */
-.state-sit .view-front,
-.state-idle .view-front,
-.state-scratch .view-front {
-  display: block !important;
-}
-
-/* Side View states (Walk, Run) */
-.state-walk .view-side,
-.state-run .view-side {
-  display: block !important;
-}
-
-/* Sleep View state */
-.state-sleep .view-sleep {
-  display: block !important;
-}
-
-/* Stretch View state */
-.state-stretch .view-stretch {
-  display: block !important;
-}
-
-/* ==========================================================================
-   Speech Bubble Styling
-   ========================================================================== */
 .bubble {
   position: absolute;
-  top: 15px;
+  top: 12px;
   left: 50%;
-  transform: translateX(-50%);
-  background: rgba(15, 12, 27, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #ffffff;
+  max-width: 184px;
   padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
+  background: rgba(15, 12, 27, 0.86);
+  color: #ffffff;
+  text-align: center;
   font-size: 0.8rem;
   font-weight: 500;
-  max-width: 180px;
-  text-align: center;
+  line-height: 1.3;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  z-index: 100;
-  animation: floatIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-  pointer-events: auto;
   cursor: pointer;
+  pointer-events: auto;
+  transform: translateX(-50%);
+  z-index: 10;
+  animation: floatIn 0.25s ease-out forwards;
 }
 
 .bubble-arrow {
   position: absolute;
   bottom: -6px;
   left: 50%;
-  transform: translateX(-50%) rotate(45deg);
   width: 10px;
   height: 10px;
-  background: rgba(15, 12, 27, 0.85);
   border-right: 1px solid rgba(255, 255, 255, 0.12);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(15, 12, 27, 0.86);
+  transform: translateX(-50%) rotate(45deg);
 }
 
-@keyframes floatIn {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 15px) scale(0.85);
-  }
+@keyframes aliveBreathe {
+  0%,
   100% {
-    opacity: 1;
-    transform: translate(-50%, 0) scale(1);
+    transform: translateY(0) scaleX(1) scaleY(1);
+  }
+  50% {
+    transform: translateY(1px) scaleX(1.012) scaleY(0.988);
   }
 }
 
-/* ==========================================================================
-   State & Keyframe Animations
-   ========================================================================== */
+@keyframes sleepBreathe {
+  0%,
+  100% {
+    transform: translateY(2px) scaleX(1.01) scaleY(0.99);
+  }
+  50% {
+    transform: translateY(0) scaleX(0.992) scaleY(1.008);
+  }
+}
 
-/* Shadow pulse (idle breathing) */
-.shadow {
-  transform-origin: 100px 180px;
-  animation: shadowPulse 3s ease-in-out infinite;
+@keyframes walkBodyBounce {
+  from {
+    transform: translateY(0) rotate(-0.5deg);
+  }
+  to {
+    transform: translateY(-2px) rotate(0.5deg);
+  }
+}
+
+@keyframes stretchSettle {
+  0%,
+  100% {
+    transform: translateY(0) scaleX(1);
+  }
+  50% {
+    transform: translateY(1px) scaleX(1.01);
+  }
+}
+
+@keyframes scratchBounce {
+  from {
+    transform: translateY(0) rotate(-0.4deg);
+  }
+  to {
+    transform: translateY(-1.5px) rotate(0.4deg);
+  }
+}
+
+@keyframes yawnSway {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-1deg);
+  }
+}
+
+@keyframes arriveLook {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  32% {
+    transform: rotate(4deg);
+  }
+  68% {
+    transform: rotate(-4deg);
+  }
+}
+
+@keyframes happyWiggle {
+  from {
+    transform: rotate(-1.4deg) translateY(0);
+  }
+  to {
+    transform: rotate(1.4deg) translateY(-1px);
+  }
+}
+
+@keyframes smallAttention {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  40% {
+    transform: translateY(-1.5px) rotate(-1.2deg);
+  }
+}
+
+@keyframes dragWiggle {
+  from {
+    transform: rotate(-2deg);
+  }
+  to {
+    transform: rotate(2deg);
+  }
+}
+
+@keyframes curlIntoSleep {
+  from {
+    transform: rotate(0deg) scale(1);
+  }
+  to {
+    transform: rotate(-8deg) scale(0.94);
+  }
 }
 
 @keyframes shadowPulse {
-  0%, 100% { transform: scale(1); opacity: 0.85; }
-  50% { transform: scale(1.05); opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: translateX(-50%) scaleX(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateX(-50%) scaleX(1.06);
+  }
 }
 
-/* --------------------------------------------------------------------------
-   1. Front View Animations (SIT / IDLE / SCRATCH)
-   -------------------------------------------------------------------------- */
-.state-idle .head-bob-group {
-  transform-origin: 100px 90px;
-  animation: headBob 3s ease-in-out infinite;
-}
-.state-idle .body {
-  transform-origin: 100px 145px;
-  animation: bodyBreathe 3s ease-in-out infinite;
-}
-.state-idle .tail {
-  transform-origin: 130px 135px;
-  animation: tailWagSlow 2.5s ease-in-out infinite;
-}
-
-@keyframes headBob {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(1.5px) rotate(-0.5deg); }
-}
-@keyframes bodyBreathe {
-  0%, 100% { transform: scaleY(1); }
-  50% { transform: scaleY(0.97) scaleX(1.01); }
-}
-@keyframes tailWagSlow {
-  0%, 100% { transform: rotate(0deg); }
-  50% { transform: rotate(-5deg); }
-}
-
-/* Sit State */
-.state-sit .head-bob-group {
-  transform-origin: 100px 90px;
-  animation: headBob 4s ease-in-out infinite;
-}
-.state-sit .body {
-  transform-origin: 100px 145px;
-  transform: scaleY(0.94) translateY(4px);
-}
-.state-sit .front-legs-front .leg-fl, 
-.state-sit .front-legs-front .leg-fr {
-  transform: scaleY(0.9) translateY(2px);
-}
-.state-sit .tail {
-  transform-origin: 130px 135px;
-  animation: tailWagSlow 3.5s ease-in-out infinite;
-}
-
-/* Scratch State */
-.state-scratch .front-legs-back .leg-bl {
-  transform-origin: 62px 142px;
-  animation: legScratch 0.15s ease-in-out infinite;
-}
-.state-scratch .head-bob-group {
-  transform-origin: 100px 90px;
-  transform: rotate(-8deg) translateY(4px);
-}
-.state-scratch .tail {
-  transform-origin: 130px 135px;
-  transform: rotate(-10deg);
-}
-
-@keyframes legScratch {
-  0%, 100% { transform: rotate(0deg) translate(0, 0); }
-  50% { transform: rotate(-25deg) translate(-5px, -8px); }
-}
-
-/* --------------------------------------------------------------------------
-   2. Side View Animations (WALK / RUN)
-   -------------------------------------------------------------------------- */
-/* --------------------------------------------------------------------------
-   2. Side View Animations (WALK / RUN)
-   -------------------------------------------------------------------------- */
-/* Setup Joint Transform Origins */
-/* Hide all spritesheet frames by default */
-.side-body-spritesheet .frame {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* Play walk spritesheet loop (4 frames) */
-.state-walk .side-body-spritesheet .frame-1 { animation: framePlay4 0.6s step-start infinite; animation-delay: 0.0s; }
-.state-walk .side-body-spritesheet .frame-2 { animation: framePlay4 0.6s step-start infinite; animation-delay: 0.15s; }
-.state-walk .side-body-spritesheet .frame-3 { animation: framePlay4 0.6s step-start infinite; animation-delay: 0.30s; }
-.state-walk .side-body-spritesheet .frame-4 { animation: framePlay4 0.6s step-start infinite; animation-delay: 0.45s; }
-
-/* Play run spritesheet loop (double tempo) */
-.state-run .side-body-spritesheet .frame-1 { animation: framePlay4 0.36s step-start infinite; animation-delay: 0.0s; }
-.state-run .side-body-spritesheet .frame-2 { animation: framePlay4 0.36s step-start infinite; animation-delay: 0.09s; }
-.state-run .side-body-spritesheet .frame-3 { animation: framePlay4 0.36s step-start infinite; animation-delay: 0.18s; }
-.state-run .side-body-spritesheet .frame-4 { animation: framePlay4 0.36s step-start infinite; animation-delay: 0.27s; }
-
-@keyframes framePlay4 {
-  0%, 24% { opacity: 1; pointer-events: auto; }
-  25%, 100% { opacity: 0; pointer-events: none; }
-}
-
-/* Bouncy Walk/Run Head Bob Animations */
-.state-walk .side-head-bob-group {
-  transform-origin: 124px 115px;
-  animation: walkHeadBob 0.3s ease-in-out infinite alternate;
-}
-.state-run .side-head-bob-group {
-  transform-origin: 124px 115px;
-  animation: walkHeadBobRun 0.18s ease-in-out infinite alternate;
-}
-
-@keyframes walkHeadBob {
-  0% { transform: translateY(0) rotate(0deg); }
-  100% { transform: translateY(2px) rotate(-1deg); }
-}
-@keyframes walkHeadBobRun {
-  0% { transform: translateY(0) rotate(0deg); }
-  100% { transform: translateY(3.5px) rotate(-2deg); }
-}
-
-/* --------------------------------------------------------------------------
-   3. Sleep View Animations (SLEEP)
-   -------------------------------------------------------------------------- */
-.state-sleep .sleep-body {
-  transform-origin: 100px 150px;
-  animation: bodyBreatheDeep 4s ease-in-out infinite;
-}
-.state-sleep .sleep-head {
-  transform-origin: 98px 135px;
-  animation: headBobSleep 4s ease-in-out infinite;
-}
-.state-sleep .shadow {
-  transform-origin: 100px 180px;
-  animation: shadowPulseDeep 4s ease-in-out infinite;
-}
-
-@keyframes bodyBreatheDeep {
-  0%, 100% { transform: scaleY(0.92) scaleX(1.02) translateY(3px); }
-  50% { transform: scaleY(0.96) scaleX(0.98) translateY(1px); }
-}
-@keyframes headBobSleep {
-  0%, 100% { transform: translateY(3px) rotate(-0.5deg); }
-  50% { transform: translateY(1px) rotate(0deg); }
-}
-@keyframes shadowPulseDeep {
-  0%, 100% { transform: scale(0.95); opacity: 0.7; }
-  50% { transform: scale(1); opacity: 0.85; }
-}
-
-/* --------------------------------------------------------------------------
-   4. Stretch View Animations (STRETCH)
-   -------------------------------------------------------------------------- */
-.state-stretch .stretch-tail {
-  transform-origin: 55px 100px;
-  animation: tailWagFast 0.2s ease-in-out infinite alternate;
-}
-.state-stretch .stretch-body {
-  transform-origin: 64px 110px;
-  animation: stretchBodyBreathe 2s ease-in-out infinite;
-}
-
-@keyframes stretchBodyBreathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scaleY(0.97) scaleX(1.02); }
-}
-
-/* --------------------------------------------------------------------------
-   Eye Blinking (Front View only)
-   -------------------------------------------------------------------------- */
-.eye-l-group {
-  transform-origin: 80px 62px;
-  animation: blinkCycle 4.2s infinite;
-}
-
-.eye-r-group {
-  transform-origin: 120px 62px;
-  animation: blinkCycle 4.2s infinite;
-}
-
-@keyframes blinkCycle {
-  0%, 96%, 100% { transform: scaleY(1); }
-  98% { transform: scaleY(0.05); }
-}
-
-
-/* ==========================================================================
-   Micro Animations CSS Layer
-   ========================================================================== */
-.ear-twitch-l .ear-l {
-  transform-origin: 68px 54px;
-  animation: earTwitchL 0.4s ease-out;
-}
-.ear-twitch-r .ear-r {
-  transform-origin: 132px 54px;
-  animation: earTwitchR 0.4s ease-out;
-}
-@keyframes earTwitchL {
-  0% { transform: rotate(0deg); }
-  35% { transform: rotate(-12deg); }
-  70% { transform: rotate(6deg); }
-  100% { transform: rotate(0deg); }
-}
-@keyframes earTwitchR {
-  0% { transform: rotate(0deg); }
-  35% { transform: rotate(12deg); }
-  70% { transform: rotate(-6deg); }
-  100% { transform: rotate(0deg); }
-}
-
-.sniff .nose {
-  transform-origin: 100px 72px;
-  animation: noseSniff 0.15s ease-in-out infinite alternate;
-}
-@keyframes noseSniff {
-  0% { transform: translateY(0px) scale(1); }
-  100% { transform: translateY(-1.5px) scale(1.05); }
-}
-
-.paw-shift .leg-fl-group {
-  transform-origin: 78px 130px;
-  animation: pawLift 0.6s ease-in-out;
-}
-.paw-shift-r .leg-fr-group {
-  transform-origin: 118px 130px;
-  animation: pawLift 0.6s ease-in-out;
-}
-@keyframes pawLift {
-  0% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-3.5px) rotate(-4deg); }
-  100% { transform: translateY(0px) rotate(0deg); }
-}
-
-.micro-wag .tail {
-  animation: tailWagFast 0.15s ease-in-out infinite alternate !important;
-}
-
-/* Playful / Energetic personality speed shifts */
-.playful-wag .tail {
-  animation-duration: 1.8s !important;
-}
-
-/* Curling up to Sleep rotation */
-.curling-up {
-  transition: transform 1s ease-in-out;
-  transform: rotate(-15deg) scale(0.95);
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 12px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
 }

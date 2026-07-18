@@ -8,6 +8,7 @@ class SpritePlayer {
     this.Engine = Engine;
     this.startMicroCycle();
     this.startDistractionCycle();
+    this.startBlinkCycle();
   }
 
   startMicroCycle() {
@@ -75,6 +76,38 @@ class SpritePlayer {
       }
       this.startDistractionCycle();
     }, interval);
+  }
+
+  startBlinkCycle() {
+    const nextBlink = 3000 + Math.random() * 3000;
+    setTimeout(() => {
+      if (this.Engine.currentState !== this.Engine.STATES.SLEEP && !this.Engine.isDragging) {
+        const eyelids = document.querySelector('.img-eyelids');
+        const whiteEyeImg = document.querySelector('.view-front .eyes image[href*="white_eye"]');
+        const pupilImg = document.querySelector('.pupil-layer');
+        const vectors = document.querySelectorAll('.eye-white, .pupil, .sparkle');
+
+        if (eyelids) {
+          eyelids.classList.remove('hidden');
+          if (whiteEyeImg) whiteEyeImg.setAttribute('visibility', 'hidden');
+          if (pupilImg) pupilImg.setAttribute('visibility', 'hidden');
+          vectors.forEach(v => v.setAttribute('visibility', 'hidden'));
+
+          setTimeout(() => {
+            eyelids.classList.add('hidden');
+            if (whiteEyeImg) whiteEyeImg.setAttribute('visibility', 'visible');
+            if (pupilImg) pupilImg.setAttribute('visibility', 'visible');
+            
+            // Re-hide vectors if images are successfully loaded
+            const whiteEyeVisible = whiteEyeImg && whiteEyeImg.getAttribute('visibility') !== 'hidden';
+            if (!whiteEyeVisible) {
+              vectors.forEach(v => v.setAttribute('visibility', 'visible'));
+            }
+          }, 150);
+        }
+      }
+      this.startBlinkCycle();
+    }, nextBlink);
   }
 }
 

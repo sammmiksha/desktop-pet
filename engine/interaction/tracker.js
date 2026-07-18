@@ -27,6 +27,7 @@ class InteractionTracker {
     el.dogEl.addEventListener('mousedown', (e) => {
       if (e.button !== 0) return;
       this.Engine.isDragging = true;
+      el.dogEl.classList.add('dragging');
       ipcRenderer.send('set-ignore-mouse', false);
 
       this.Engine.dragOffset.x = e.clientX;
@@ -44,19 +45,20 @@ class InteractionTracker {
           offsetX: this.Engine.dragOffset.x,
           offsetY: this.Engine.dragOffset.y
         });
-        
-        el.tailEl.style.transform = `rotate(${Math.sin(Date.now() / 50) * 15}deg)`;
-        el.tongueEl.classList.remove('hidden');
       }
     });
 
     window.addEventListener('mouseup', () => {
       if (this.Engine.isDragging) {
         this.Engine.isDragging = false;
-        el.tongueEl.classList.add('hidden');
-        el.tailEl.style.transform = '';
+        el.dogEl.classList.remove('dragging');
         ipcRenderer.send('set-ignore-mouse', true, { forward: true });
         this.Engine.applyState(this.Engine.STATES.SIT);
+        
+        // Synchronize final coordinates after dragging
+        const pos = ipcRenderer.sendSync('get-window-position') || { x: 100, y: 100 };
+        this.Engine.currentPetPosition.x = pos.x;
+        this.Engine.currentPetPosition.y = pos.y;
       }
     });
 
@@ -85,37 +87,28 @@ class InteractionTracker {
 
       if (distance > 400) {
         if (!this.Engine.isDistracted) {
-          this.Engine.targetEyeOffset.x = 0;
-          this.Engine.targetEyeOffset.y = 0;
+          this.Engine.targetLook = { x: 0, y: 0, rotate: 0 };
         }
-        this.Engine.targetHeadRotate = 0;
-        this.Engine.targetHeadTranslate = { x: 0, y: 0 };
         return;
       }
 
       if (this.Engine.isDistracted) {
-        this.Engine.targetHeadRotate = 0;
-        this.Engine.targetHeadTranslate = { x: 0, y: 0 };
         return;
       }
 
-      const maxEyeOffset = 4.5;
-      const eyeOffsetVal = Math.min(distance * 0.08, maxEyeOffset);
-      this.Engine.targetEyeOffset.x = Math.cos(angle) * eyeOffsetVal;
-      this.Engine.targetEyeOffset.y = Math.sin(angle) * eyeOffsetVal;
+      const lookStrength = Math.min(distance / 250, 1);
+      this.Engine.targetLook = {
+        x: Math.cos(angle) * lookStrength * 4,
+        y: Math.sin(angle) * lookStrength * 2.5,
+        rotate: Math.cos(angle) * lookStrength * 5
+      };
 
       if (distance <= 250) {
-        const maxHeadTilt = 12;
-        const headTiltVal = Math.min(distance * 0.05, maxHeadTilt);
-        this.Engine.targetHeadRotate = Math.cos(angle) * headTiltVal * 0.6;
-        
-        const maxHeadPush = 4.0;
-        const headPushVal = Math.min(distance * 0.02, maxHeadPush);
-        this.Engine.targetHeadTranslate.x = Math.cos(angle) * headPushVal;
-        this.Engine.targetHeadTranslate.y = Math.sin(angle) * headPushVal;
+        el.dogEl.classList.add('micro-wag');
+        clearTimeout(this.cursorWagTimeout);
+        this.cursorWagTimeout = setTimeout(() => el.dogEl.classList.remove('micro-wag'), 500);
       } else {
-        this.Engine.targetHeadRotate = 0;
-        this.Engine.targetHeadTranslate = { x: 0, y: 0 };
+        el.dogEl.classList.remove('micro-wag');
       }
     });
 

@@ -272,6 +272,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 2000);
   });
 
+  // Set Custom Timer Button handler
+  const setCustomTimerBtn = document.getElementById('set-custom-timer-btn');
+  if (setCustomTimerBtn) {
+    setCustomTimerBtn.addEventListener('click', () => {
+      const customRadio = document.querySelector('input[name="reminder-preset"][value="custom"]');
+      if (customRadio) {
+        customRadio.checked = true;
+        const presetRadios = document.querySelectorAll('input[name="reminder-preset"]');
+        presetRadios.forEach(r => r.closest('.radio-card-cozy').classList.remove('selected'));
+        customRadio.closest('.radio-card-cozy').classList.add('selected');
+      }
+      globalSaveBtn.click(); // Trigger global save
+    });
+  }
+
   // Start initialization
   populateFields();
   initStatusDisplay();

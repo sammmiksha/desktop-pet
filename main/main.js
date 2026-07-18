@@ -1,4 +1,4 @@
-const { app, BrowserWindow, screen, ipcMain, Menu, Tray, powerMonitor } = require('electron');
+const { app, BrowserWindow, screen, ipcMain, Menu, Tray, powerMonitor, session } = require('electron');
 const path = require('path');
 const configStore = require('../settings/config-store');
 
@@ -249,6 +249,9 @@ ipcMain.on('move-pet', (event, { x, y }) => {
 
 // App Lifecycle
 app.whenReady().then(() => {
+  // Clear cache on startup to ensure fresh local assets are loaded
+  session.defaultSession.clearCache();
+
   const config = configStore.load();
 
   if (!configStore.hasConfig()) {

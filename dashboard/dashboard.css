@@ -79,8 +79,16 @@ body {
   box-shadow: var(--shadow-cozy);
 }
 
-.avatar-emoji {
+.avatar-emoji,
+.avatar-image {
   font-size: 1.4rem;
+}
+
+.avatar-image {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  object-position: center bottom;
 }
 
 .profile-info {
@@ -293,9 +301,16 @@ body {
   align-items: center;
 }
 
-.illustration-svg {
+.illustration-svg,
+.dashboard-dog-image {
   width: 100%;
   height: 100%;
+}
+
+.dashboard-dog-image {
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 5px 5px rgba(58, 58, 58, 0.16));
 }
 
 .card-tag {
@@ -649,9 +664,18 @@ input:checked + .slider:before {
   border-radius: 8px;
 }
 
-.preview-bubble-emoji {
+.preview-bubble-emoji,
+.preview-bubble-avatar {
   font-size: 1.2rem;
   flex-shrink: 0;
+}
+
+.preview-bubble-avatar {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 2px 2px rgba(58, 58, 58, 0.12));
 }
 
 .preview-speech-bubble {
@@ -731,9 +755,20 @@ input:checked + .slider:before {
   align-items: center;
 }
 
-.mini-dog-svg {
+.mini-dog-svg,
+.mockup-dog-image {
   width: 100%;
   height: 100%;
+}
+
+.mockup-dog-image {
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 3px 3px rgba(58, 58, 58, 0.12));
+}
+
+.mockup-running {
+  transform: rotate(4deg) scale(0.96);
 }
 
 .mockup-label {

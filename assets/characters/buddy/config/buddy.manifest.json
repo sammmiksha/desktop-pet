@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "character": "Buddy",
+  "defaultState": "idle",
+  "canvas": {
+    "width": 500,
+    "height": 500
+  },
+  "anchor": {
+    "x": 250,
+    "y": 430
+  },
+  "groundBaseline": 430,
+  "scale": 1,
+  "shadowOffset": 8,
+  "collisionRadius": 80,
+  "poses": {
+    "idleLeft": "../poses/idle-left.webp",
+    "idleRight": "../poses/idle-right.webp",
+    "sleep": "../poses/sleep.webp",
+    "stretch": "../poses/stretch.webp",
+    "scratch": "../poses/scratch.webp",
+    "yawn": "../poses/yawn.webp"
+  },
+  "animations": {
+    "walk": {
+      "fps": 10,
+      "loop": true,
+      "frames": [
+        "../animations/walk/frame01.png",
+        "../animations/walk/frame02.png",
+        "../animations/walk/frame03.png",
+        "../animations/walk/frame04.png",
+        "../animations/walk/frame05.png",
+        "../animations/walk/frame06.png",
+        "../animations/walk/frame07.png",
+        "../animations/walk/frame08.png"
+      ]
+    }
+  }
+}
